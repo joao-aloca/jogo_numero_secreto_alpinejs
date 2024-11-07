@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1 x-data="{ mensagem: 'Jogo do Número Secreto'}" x-text="mensagem"></h1>
+        <p x-data="{ mensagem: 'Desafie sua sorte e descubra o número secreto! Você tem até 10 chances.' }" x-text="mensagem"></p>
+    </div>
+    <div x-data="{ contador: 0, numero_secreto :''; numero_chute: '' }">
+        <input x-model="numero_chute" placeholder="Digite o número aqui">
+        <button @click="contador++">Chutar</button>
+        <span x-text="contador"></span>
+    </div>
+</body>
+</html>
