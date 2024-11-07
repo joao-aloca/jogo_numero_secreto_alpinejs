@@ -9,14 +9,14 @@
     <title>Jogo do Número Sereto</title>
 </head>
 <body>
+    <!--Ao carregar a página, é necessário sortear o número-->
     <div>
         <h1 x-data="{ mensagem: 'Jogo do Número Secreto'}" x-text="mensagem"></h1>
         <p x-data="{ mensagem: 'Desafie sua sorte e descubra o número secreto! Você tem até 10 chances.' }" x-text="mensagem"></p>
     </div>
-    <div x-data="{ contador: 0, numero_secreto :''; numero_chute: '' }">
+    <div x-data="{ contador: 0, numero_secreto :'', numero_chute: '' }">
         <input x-model="numero_chute" placeholder="Digite o número aqui">
-        <button @click="contador++">Chutar</button>
-        <span x-text="contador"></span>
+        <button @click="contador++">Chutar</button> <!--Ao chutar, precisa desencadear a verificação se o chute bate que o número sorteado-->
+        <p>Tentativas restantes: <span x-text="10 - contador"></span></p>
     </div>
-</body>
 </html>
