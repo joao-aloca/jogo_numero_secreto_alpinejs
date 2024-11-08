@@ -1,22 +1,68 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="icon" type="image/x-icon" src="/public/favicon.ico" />
+  <link rel="stylesheet" href="/public/styles/styles.css">
 
-    <title>Jogo do Número Sereto</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <title>Jogo do Número Secreto</title>
 </head>
-<body>
-    <!--Ao carregar a página, é necessário sortear o número-->
-    <div>
-        <h1 x-data="{ mensagem: 'Jogo do Número Secreto'}" x-text="mensagem"></h1>
-        <p x-data="{ mensagem: 'Desafie sua sorte e descubra o número secreto! Você tem até 10 chances.' }" x-text="mensagem"></p>
+
+<body x-data="{
+  chute: null,
+  numero_secreto: Math.ceil(Math.random() * 100),
+  tentativas_restantes: 10,
+  quantidade_chutes: 0,
+  maior: false,
+  menor: false,
+  igual: false,
+  plural: 'tentativas',
+  singular: 'tentativa'
+ }">
+
+  <div class="principal_dicas">
+    <div class="principal">
+      <section class="textos" x-show="quantidade_chutes < 10 && !igual">
+        <h1 class="textos_titulo"><strong>Jogo do número secreto</strong></h1>
+        <p class="textos_paragrafo">Desafie sua sorte e descubra o número secreto entre 1 e 100! Você tem até 10 chances.</p>
+      </section>
+
+      <section class="usuario" x-show="quantidade_chutes < 10 && !igual">
+        <div class="usuario_interacoes_visor">
+          <div class="usuario_interacoes">
+            <input id="usuario_input" type="number" placeholder="Digite o número" x-model="chute">
+            <button id="usuario_botao" type="button"
+              @click="tentativas_restantes--, quantidade_chutes++, maior=(chute > numero_secreto), menor=(chute < numero_secreto), igual=(menor === maior)">Chutar</button>
+          </div>
+          <p class="tentativas_restantes"><strong>Tentativas restantes: </strong><span id="quantidade_tentativas" x-text="tentativas_restantes"></span></p>
+        </div>
+      </section>
     </div>
-    <div x-data="{ contador: 0, numero_secreto :'', numero_chute: '' }">
-        <input x-model="numero_chute" placeholder="Digite o número aqui">
-        <button @click="contador++">Chutar</button> <!--Ao chutar, precisa desencadear a verificação se o chute bate que o número sorteado-->
-        <p>Tentativas restantes: <span x-text="10 - contador"></span></p>
-    </div>
+
+    <section class="dica" x-show="tentativas_restantes > 0 && !igual">
+      <p x-show="maior">O número secreto é menor</p>
+      <p x-show="menor">O número secreto é maior</p>
+    </section>
+  </div>
+
+  <section class="principal" x-show="igual">
+    <h1 class="textos_titulo"><strong>Parabéns, jogador!</strong></h1>
+    <p class="textos_paragrafo">Você acertou o número secreto em <span x-text="quantidade_chutes"></span> <span x-show="quantidade_chutes > 1"
+        x-text="plural"></span><span x-show="quantidade_chutes <= 1" x-text="singular"></span>.</p>
+    <button id="usuario_botao" type="button"
+      @click="chute = null, numero_secreto = Math.ceil(Math.random() * 100), tentativas_restantes = 10, quantidade_chutes = 0, igual=false">Reiniciar</button>
+  </section>
+
+  <section class="principal" x-show="quantidade_chutes >= 10">
+    <h1 class="textos_titulo">Poxa, que pena...</h1>
+    <p class="textos_paragrafo">Infelizmente, suas tentativas se esgotaram e você não acertou o número secreto.</p>
+    <button id="usuario_botao" type="button"
+      @click="chute = null, numero_secreto = Math.ceil(Math.random() * 100), tentativas_restantes = 10, quantidade_chutes = 0, igual=false">Reiniciar</button>
+  </section>
+</body>
 </html>
